@@ -1,5 +1,14 @@
 <template>
-  <div>header</div>
+  <div class="header">
+      <div class="content-wrapper">
+        <div class="avator">
+            <img :src="seller.avatar" alt="">
+        </div>
+      </div>
+      <div class="bulletin-wrapper">
+
+      </div>
+  </div>
 </template>
 
 <script>
@@ -8,6 +17,11 @@ export default {
     return {
     };
   },
+  props:{
+    seller: {
+      type: Object
+    }
+  }
 }
 
 </script>

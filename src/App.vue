@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header></Header> 
+    <Header :seller="seller"></Header> 
     <div class="tab border-1px">
       <div class="tab-item">
         <!-- <a v-link="{path:'/goods'}">商品</a> -->
@@ -22,6 +22,7 @@ import Vue from 'vue'
 import Header from './components/header/header.vue'
 import axios from 'axios'
 const ERR_OK= 0;
+var seller = {};
 
 // Vue.use(axios)
 Vue.prototype.$http = axios
@@ -33,13 +34,13 @@ export default {
   },
   created(){
     axios.get('/api/seller')
-      .then(function (response) {
-        // response = response.json();
-        /* if (response.errno === ERR_OK){
+      .then((response) => {
+        console.log(this)
+        response = response.data
+        console.log(response.errno);
+        if (response.errno === ERR_OK){
           this.seller = response.data;
-          console.log(this.seller);
-        } */
-        console.log(JSON.stringify(response.data.data));
+        }
       })
       .catch(function (error) {
         console.log(error);
