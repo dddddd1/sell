@@ -6,9 +6,7 @@
         </div>
         <div class="content">
             <div class="title">
-                <div class="brand">
-
-                </div>
+                <div class="brand"></div>
                 <div class="name">{{seller.name}}</div>
             </div>
             <div class="description">
@@ -32,20 +30,46 @@
       <div class="background">
         <img :src="seller.avatar" alt="">
       </div>
-      <div v-show="detailShow" class="detail">
-        <div class="detail-wrapper clearfix">
-          <div class="detail-main">
-            <h1 class="detail-name">{{seller.name}}</h1>
+      <transition name="fade">
+        <div v-show="detailShow" class="detail">
+          <div class="detail-wrapper clearfix">
+            <div class="detail-main">
+              <h1 class="detail-name">{{seller.name}}</h1>
+              <div class="star-wrapper">
+                <star :size="48" :score="seller.score"></star>
+              </div>
+              <div class="title">
+                <div class="line"></div>
+                <div class="text">优惠信息</div>
+                <div class="line"></div>
+              </div>
+              <ul v-if="seller.supports" class="supports">
+                <li class="support-item" v-for="(item, index) in seller.supports">
+                  <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                  <span class="text">{{seller.supports[index].description}}</span>
+                </li>
+              </ul>
+              <div class="title">
+                <div class="line"></div>
+                <div class="text">商家公告</div>
+                <div class="line"></div>
+              </div>
+              <div class="bulletin">{{seller.bulletin}}</div>
+                  
+              
+            </div>
           </div>
+          <div class="detail-close">
+            <i class="icon-close" @click="Hidedetail()"></i>
+          </div>
+          <div class="detail-bg"></div>
         </div>
-        <div class="detail-close">
-          <i class="icon-close" @click="Hidedetail()"></i>
-        </div>
-      </div>
+      </transition>
   </div>
 </template>
 
 <script>
+import star from '@/components/star/star.vue'; 
 export default {
   data () {
     return {
@@ -67,12 +91,24 @@ export default {
     Hidedetail(){
       this.detailShow=false
     }
+  },
+  components:{
+    star
   }
 }
 
 </script>
 <style lang='stylus' scoped>
 @import "../../common/stylus/mixin";
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  background rgba(7,17,27,0)
+}
+
+
 
 .header
   color #fff
@@ -210,7 +246,7 @@ export default {
     left 0px
     overflow auto
     background-color :rgba(7,17,27,0.8)
-    // filter :blur(10px)
+    backdrop-filter blur(10px)   //ios有效果  渐进增强
     .detail-wrapper
       min-height 100%
       width 100%
@@ -223,6 +259,55 @@ export default {
           font-weight 700
           line-height 32px
           text-align center
+        .star-wrapper
+          text-align center
+          margin-top 18px
+          padding 2px 0px
+        .title
+          display flex
+          width 80%
+          margin 28px auto 24px auto 
+          .line
+            flex 1
+            position relative
+            top -6px
+            border-bottom 1px solid rgba(255,255,255,0.2)
+          .text
+            padding:0px 12px
+            font-weight 700
+            font-size:14px
+        .supports
+          margin-top 24px
+          .support-item
+            margin-bottom 12px
+            font-size 0px
+            .icon
+              background-size 16px 16px 
+              width 16px
+              height 16px
+              display inline-block
+              &.decrease
+                bg-image('decrease_2')
+              &.discount
+                bg-image('discount_2')
+              &.guarantee
+                bg-image('guarantee_2')
+              &.invoice
+                bg-image('invoice_2')  
+              &.special
+                bg-image('special_2')  
+            .text
+              font-size: 12px;
+              vertical-align: top;
+              display: inline-block;
+              height: 16px;
+              line-height: 16px;
+              padding-left: 8px;
+            &:last-child
+              margin-bottom 28px
+        .bulletin
+          font-size 12px
+          line-height 24px
     .detail-close
       position relative
       width 32px
@@ -233,4 +318,12 @@ export default {
       .icon-close
         width 32px
         height 32px
+    .detail-bg
+      // background-color rgba(7,17,27,0.8)
+      filter blur(10px)
+      position fixed
+      top 0px
+      width 100%
+      height 100%
+      z-index -1
 </style>

@@ -5,7 +5,7 @@ import header from '@/components/header/header'
 import goods from '@/components/goods/goods'
 import ratings from '@/components/ratings/ratings'
 import seller from '@/components/seller/seller'
-
+import star from '@/components/star/star'
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +34,11 @@ export default new Router({
     {
       path: '/seller',
       component: seller
+    },
+    //star页面
+    {
+      path: '/star',
+      component: star
     }
   ],
   linkExactActiveClass:'active'
