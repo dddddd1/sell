@@ -107,15 +107,13 @@ export default {
   opacity: 0;
   background rgba(7,17,27,0)
 }
-
-
-
 .header
   color #fff
   position relative
   background-color :rgba(7,17,27,0.5)
   overflow hidden
   .content-wrapper
+    display flex
     position relative
     overflow hidden
     padding 24px 12px 18px 24px
@@ -133,6 +131,7 @@ export default {
         font-size 14px
         margin-left 16px
         .title
+          display flex
           margin 2px 0px 8px 0px
           .brand  
             width 30px
@@ -214,12 +213,14 @@ export default {
       background-size 22px 12px
       vertical-align top
       background-repeat no-repeat
-      margin-top 7px
+      margin-top 8px
       float left
     .bulletin-text
-      padding-left 4px
-      vertical-align top
-      font-size 10px
+      padding-left: 4px;
+      vertical-align: top;
+      font-size: 10px;
+      // display: inline-block;
+      line-height: 30px;
     .icon-keyboard_arrow_right
       font-size 12px
       line-height 28px
