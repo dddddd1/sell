@@ -2,7 +2,7 @@
   <div class="goods">
       <div class="menu-wrapper" ref="menuWrapper">
         <ul>
-          <li v-for="(item , index) in Goods" class="menu-item" :class="{'current':currentIndex===index}" @click="selectMenu(index)">
+          <li v-for="(item , index) in Goods" :key="index" class="menu-item" :class="{'current':currentIndex===index}" @click="selectMenu(index)">
             <span class="text border-1px">
               <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
               {{item.name}}
@@ -15,7 +15,7 @@
           <li v-for="item in Goods" class="food-list food-list-hook">
             <h1 class="title">{{item.name}}</h1>
             <ul>
-              <li v-for="food in item.foods" class="food-item">
+              <li  @click="selectFood(food)" v-for="food in item.foods" class="food-item">
                 <div class="icon">
                   <img :src="food.icon" alt="">
                 </div>
@@ -34,6 +34,8 @@
           </li>
         </ul>
       </div>
+      <shopcart></shopcart>
+      <food :food="selectedFood" ></food>
   </div>
 </template>
 
@@ -41,6 +43,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import BScroll from 'better-scroll'
+import shopcart from '@/components/shopcart/shopcart'
+import food from '@/components/food/food'
 
 const ERR_OK= 0;
 Vue.prototype.$http = axios
@@ -56,6 +60,7 @@ export default {
       Goods: {},
       listHeight:[],     
       scrollY:0,
+      selectedFood:{}
     };
   },
   created(){
@@ -64,7 +69,6 @@ export default {
         response = response.data
         if (response.errno === ERR_OK){
           this.Goods = response.data;
-          // console.log(this.Goods[0].name)
           this.$nextTick(() => {
             this._initScroll();
             this._calculateHeight();
@@ -100,10 +104,14 @@ export default {
         }
       },
       selectMenu(index){
-        console.log(index)
+        // console.log(index)
         let foodList = this.$refs.foodsWrapper.getElementsByClassName("food-list-hook")
         let el = foodList[index]
         this.foodsScroll.scrollToElement(el,300)
+      },
+      selectFood(food){
+        this.selectedFood = food;
+        this.$refs.food.show();
       }
   },
   computed: {
@@ -116,8 +124,11 @@ export default {
         };
       }
       return 0;
-
     }
+  },
+  components:{
+    shopcart,
+    food
   }
 }
 
@@ -147,7 +158,7 @@ export default {
         background-color #fff
         font-weight 700
         position relative
-        margin-top -1px
+        // margin-top -1px
         z-index 10
         .text
           border-none()
